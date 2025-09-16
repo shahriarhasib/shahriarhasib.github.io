@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shahriar's CV</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Md. Shahriar</h1>
+    <p class="contact">📞 +8801755533331 | 📧 shahriar@example.com</p>
+  </header>
+
+  <section class="section">
+    <h2>Professional Summary</h2>
+    <p>Persistent, methodical automation architect with cross-platform fluency in Linux, Windows, and telephony systems. Passionate about traceable, future-proof infrastructure and collaborative troubleshooting.</p>
+  </section>
+
+  <section class="section">
+    <h2>Skills</h2>
+    <ul>
+      <li>Linux shell scripting, Windows CMD, PowerShell, PHP (legacy & modern)</li>
+      <li>Systemd, daemonization, service management</li>
+      <li>Excel formulas for dynamic reporting</li>
+      <li>Git, database integration, authentication debugging</li>
+      <li>Telephony: Asterisk, Issabel, Avaya IP Office</li>
+      <li>Zabbix monitoring, OpenVPN deployment</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Recent Projects</h2>
+    <ul>
+      <li>Bulletproof scripts for SMS alerts, API calls, and file merging</li>
+      <li>AGI/PHP integration for telephony APIs with malformed JSON handling</li>
+      <li>Excel workflows for duplicate detection and conditional reporting</li>
+      <li>Git automation with secure authentication</li>
+      <li>Zabbix agent/server NAT troubleshooting</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Education & Certifications</h2>
+    <p>B.Sc. in Computer Science — University Name</p>
+    <p>Certifications: CCNA, RHCE, Microsoft Certified Professional</p>
+  </section>
+
+  <footer>
+    <p>© 2025 Md. Shahriar</p>
+  </footer>
+</body>
+</html>
