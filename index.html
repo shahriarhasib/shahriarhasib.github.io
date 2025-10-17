@@ -1,53 +1,740 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Shahriar's CV</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasan Shahriar Kabir - IP Telephony Specialist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #8b5cf6;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --border: #e2e8f0;
+            --success: #10b981;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Section */
+        .header {
+            background: var(--bg-white);
+            border-radius: 20px;
+            padding: 60px 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .title {
+            font-size: 1.4em;
+            color: var(--text-light);
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .header .summary {
+            max-width: 800px;
+            margin: 20px auto;
+            font-size: 1.1em;
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+            font-size: 0.95em;
+        }
+
+        .contact-item svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--primary);
+        }
+
+        /* Key Skills Pills */
+        .skills-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .skill-pill {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        /* Section Styles */
+        .section {
+            background: var(--bg-white);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--border);
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .section h2 {
+            font-size: 2em;
+            color: var(--text-dark);
+        }
+
+        /* Timeline Styles */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -46px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            background: var(--primary);
+            border: 4px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px var(--primary);
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            cursor: pointer;
+            padding: 20px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-header:hover {
+            background: #e0e7ff;
+            transform: translateX(5px);
+        }
+
+        .timeline-title {
+            flex: 1;
+        }
+
+        .timeline-title h3 {
+            font-size: 1.4em;
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+
+        .timeline-title .company {
+            color: var(--text-light);
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        .timeline-period {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+
+        .timeline-summary {
+            color: var(--text-light);
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .timeline-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            padding-left: 20px;
+        }
+
+        .timeline-details.expanded {
+            max-height: 2000px;
+        }
+
+        .timeline-details ul {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .timeline-details li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            color: var(--text-light);
+        }
+
+        .timeline-details li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-size: 1.5em;
+        }
+
+        .expand-icon {
+            margin-left: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .expand-icon.rotated {
+            transform: rotate(180deg);
+        }
+
+        /* Project Cards */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .project-card {
+            background: var(--bg-light);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.2);
+            border-color: var(--primary);
+        }
+
+        .project-card h3 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .project-year {
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .project-summary {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .project-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .project-details.expanded {
+            max-height: 1000px;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-category {
+            background: var(--bg-light);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .skill-category h3 {
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: var(--text-dark);
+            border: 1px solid var(--border);
+        }
+
+        /* Education Cards */
+        .education-item {
+            background: var(--bg-light);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .education-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .education-header h3 {
+            color: var(--primary-dark);
+            font-size: 1.3em;
+        }
+
+        .education-year {
+            background: var(--secondary);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .education-details {
+            color: var(--text-light);
+            margin-top: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .header .title {
+                font-size: 1.1em;
+            }
+
+            .section {
+                padding: 25px;
+            }
+
+            .timeline-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Md. Shahriar</h1>
-    <p class="contact">📞 +88017555**** | 📧 shahriar@example.com</p>
-  </header>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Hasan Shahriar Kabir</h1>
+            <div class="title">IP Telephony Specialist</div>
+            <div class="summary">
+                With B.Sc. in Electronics & Telecommunication Engineering and 15+ years in the ICT sector, 
+                specializing in IP Telephony systems, network integration, and technical solution development. 
+                Currently managing IP Telephony operations at BEXIMCO's IT division, ensuring optimal system 
+                performance and leading edge systems integration.
+            </div>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    emailofshahriar@gmail.com
+                </div>
+                <div class="contact-item">
+                    <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    +880 1755533331
+                </div>
+                <div class="contact-item">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    Dhaka, Bangladesh
+                </div>
+                <div class="contact-item">
+                    <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+                    /in/Engr.Shahriar
+                </div>
+            </div>
+            <div class="skills-pills">
+                <span class="skill-pill">15+ Years Experience</span>
+                <span class="skill-pill">Project Management</span>
+                <span class="skill-pill">IP Telephony</span>
+                <span class="skill-pill">Team Leadership</span>
+                <span class="skill-pill">Solution Development</span>
+            </div>
+        </header>
 
-  <section class="section">
-    <h2>Professional Summary</h2>
-    <p>Persistent, methodical automation architect with cross-platform fluency in Linux, Windows, and telephony systems. Passionate about traceable, future-proof infrastructure and collaborative troubleshooting.</p>
-  </section>
+        <!-- Work Experience Section -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+                </div>
+                <h2>Work Experience</h2>
+            </div>
+            <div class="timeline">
+                <!-- Current Position -->
+                <div class="timeline-item">
+                    <div class="timeline-header" onclick="toggleDetails(this)">
+                        <div class="timeline-title">
+                            <h3>Manager, IP Telephony Dept.</h3>
+                            <div class="company">BEXIMCO IT Division (Bangladesh Online)</div>
+                            <div class="timeline-summary">Leading nationwide IP Telephony operations and managing clustered IP PABX networks across BEXIMCO group</div>
+                        </div>
+                        <div class="timeline-period">
+                            Feb 2010 - Present
+                            <span class="expand-icon">▼</span>
+                        </div>
+                    </div>
+                    <div class="timeline-details">
+                        <ul>
+                            <li>Soft switch and media gateways administration, Session analysis and debugging for nationwide IP Telephony Service (IPTSP)</li>
+                            <li>Network planning, Quality and least cost call routing implementation</li>
+                            <li>Rate and Number planning, allocation and management</li>
+                            <li>IP routing and firewall administration for voice networks</li>
+                            <li>SS7, E1, hosted/on-site call center, IP PABX, call blasting & call survey systems configuration</li>
+                            <li>Pre-sales consultancy, tailored solution design, analysis and system development</li>
+                            <li>Advanced IVR design and TDM based legacy systems integration</li>
+                            <li>Collaboration with upstream carriers (ICXs, IGWs), PSTN and ANS operators</li>
+                            <li>Ensure optimal system performance to complete customer experiences</li>
+                            <li>Training and coordination to billing and transmission roles</li>
+                            <li>Supervise technical team and lead administration of clustered IP PABX network (13 different premises/wings) of BEXIMCO group</li>
+                        </ul>
+                    </div>
+                </div>
 
-  <section class="section">
-    <h2>Skills</h2>
-    <ul>
-      <li>Linux shell scripting, Windows CMD, PowerShell, PHP (legacy & modern)</li>
-      <li>Systemd, daemonization, service management</li>
-      <li>Excel formulas for dynamic reporting</li>
-      <li>Git, database integration, authentication debugging</li>
-      <li>Telephony: Asterisk, Issabel, Avaya IP Office</li>
-      <li>Zabbix monitoring, OpenVPN deployment</li>
-    </ul>
-  </section>
+                <!-- Previous Position -->
+                <div class="timeline-item">
+                    <div class="timeline-header" onclick="toggleDetails(this)">
+                        <div class="timeline-title">
+                            <h3>Assistant Manager, Telecom and Networking</h3>
+                            <div class="company">Communications Technology Ltd</div>
+                            <div class="timeline-summary">Unified Communications platform implementation and voice network management</div>
+                        </div>
+                        <div class="timeline-period">
+                            Oct 2008 - Feb 2010
+                            <span class="expand-icon">▼</span>
+                        </div>
+                    </div>
+                    <div class="timeline-details">
+                        <ul>
+                            <li>Installation and configuration of Unified Communication platforms and related networks</li>
+                            <li>Debugging and troubleshoot of soft switches and voice network</li>
+                            <li>IP and TDM systems integration</li>
+                            <li>Project planning, tailored solution design and development</li>
+                            <li>Pre-sales coordination and prepare government tenders for telephony</li>
+                            <li>Project in-charge: BUET Exchange, British Council, Khulna University, University of Dhaka, BSMMU, United Hospital Ltd.</li>
+                        </ul>
+                    </div>
+                </div>
 
-  <section class="section">
-    <h2>Recent Projects</h2>
-    <ul>
-      <li>Bulletproof scripts for SMS alerts, API calls, and file merging</li>
-      <li>AGI/PHP integration for telephony APIs with malformed JSON handling</li>
-      <li>Excel workflows for duplicate detection and conditional reporting</li>
-      <li>Git automation with secure authentication</li>
-      <li>Zabbix agent/server NAT troubleshooting</li>
-    </ul>
-  </section>
+                <!-- Support Engineer -->
+                <div class="timeline-item">
+                    <div class="timeline-header" onclick="toggleDetails(this)">
+                        <div class="timeline-title">
+                            <h3>Support Engineer, Network Operation</h3>
+                            <div class="company">IsPros Limited</div>
+                            <div class="timeline-summary">Network infrastructure management and internet service operations</div>
+                        </div>
+                        <div class="timeline-period">
+                            Sep 2008 - Oct 2008
+                            <span class="expand-icon">▼</span>
+                        </div>
+                    </div>
+                    <div class="timeline-details">
+                        <ul>
+                            <li>Installation and configuration of network elements for internet and data services</li>
+                            <li>IP routing, planning and implementation</li>
+                            <li>Network monitoring, performance analysis, troubleshoot and development coordination</li>
+                        </ul>
+                    </div>
+                </div>
 
-  <section class="section">
-    <h2>Education & Certifications</h2>
-    <p>B.Sc. in Computer Science — University Name</p>
-    <p>Certifications: CCNA, RHCE, Microsoft Certified Professional</p>
-  </section>
+                <!-- Intern -->
+                <div class="timeline-item">
+                    <div class="timeline-header" onclick="toggleDetails(this)">
+                        <div class="timeline-title">
+                            <h3>Intern Support Executive, NOC</h3>
+                            <div class="company">BDCOM Online Limited</div>
+                            <div class="timeline-summary">Government internship program under Ministry of Science and ICT</div>
+                        </div>
+                        <div class="timeline-period">
+                            Feb 2008 - Sep 2008
+                            <span class="expand-icon">▼</span>
+                        </div>
+                    </div>
+                    <div class="timeline-details">
+                        <ul>
+                            <li>Worked as intern under Ministry of Science and Information & Communication Technology, Government of Bangladesh</li>
+                            <li>Installation and configuration of network elements for internet and data services</li>
+                            <li>IP routing, planning and implementation</li>
+                            <li>Network monitoring, performance analysis, troubleshoot and development coordination</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <footer>
-    <p>© 2025 Md. Shahriar</p>
-  </footer>
-</body>
-</html>
+        <!-- Key Projects Section -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                </div>
+                <h2>Key Projects & Accomplishments</h2>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card" onclick="toggleProjectDetails(this)">
+                    <div class="project-year">2019</div>
+                    <h3>Call Blaster Service</h3>
+                    <div class="project-summary">Scalable automatic message broadcasting system for telemarketing campaigns</div>
+                    <div class="project-details">
+                        <p>Lead the development of a new service for scalable automatic over-the-phone message broadcasting system. Key features include:</p>
+                        <ul style="margin-top: 10px;">
+                            <li>Capability to dial millions of numbers in hours</li>
+                            <li>Multiple simultaneous campaigns management</li>
+                            <li>Management tool with media changes control</li>
+                            <li>Configurable minimum and maximum ports</li>
+                            <li>Calls per Second (CPS) control</li>
+                            <li>Real-time dashboard and rich reporting features</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="project-card" onclick="toggleProjectDetails(this)">
+                    <div class="project-year">2019</div>
+                    <h3>IVR Blaster & Tele-survey</h3>
+                    <div class="project-summary">Interactive voice response broadcasting for automated surveys</div>
+                    <div class="project-details">
+                        <p>Developed tele-survey solution with automatic IVR broadcasting capabilities:</p>
+                        <ul style="margin-top: 10px;">
+                            <li>Interactive voice response broadcasting system</li>
+                            <li>Automated survey report generation</li>
+                            <li>Dynamic call routing capabilities</li>
+                            <li>Simultaneous campaigns support</li>
+                            <li>Comprehensive management tools</li>
+                            <li>Dashboard reporting features</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="project-card" onclick="toggleProjectDetails(this)">
+                    <div class="project-year">2018</div>
+                    <h3>MNP Fetching Solution</h3>
+                    <div class="project-summary">Mobile Number Portability integration with core soft switch</div>
+                    <div class="project-details">
+                        <p>Developed and integrated MNP system for nationwide IP telephony service:</p>
+                        <ul style="margin-top: 10px;">
+                            <li>Real-time MNP fetching from MNP operator</li>
+                            <li>Integration with core soft switch</li>
+                            <li>Automatic portability checking for each call</li>
+                            <li>Routing Number (RN) allocation per BTRC MNP rules</li>
+                            <li>Daily fetching reports via email</li>
+                            <li>Compliance with Bangladesh Telecommunication Regulatory Commission standards</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Skills Section -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <svg viewBox="0 0 24 24"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+                </div>
+                <h2>Technical Skills</h2>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>IP Telephony</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">SIP Protocol</span>
+                        <span class="skill-tag">VoIP Technologies</span>
+                        <span class="skill-tag">Asterisk Platforms</span>
+                        <span class="skill-tag">Avaya IPO</span>
+                        <span class="skill-tag">Mitel Platforms</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Network & Infrastructure</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">IP Network</span>
+                        <span class="skill-tag">Firewall Admin</span>
+                        <span class="skill-tag">Linux Administration</span>
+                        <span class="skill-tag">SS7</span>
+                        <span class="skill-tag">E1</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Solutions & Systems</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Solution Development</span>
+                        <span class="skill-tag">Call Center Platforms</span>
+                        <span class="skill-tag">IVR Systems</span>
+                        <span class="skill-tag">IP PABX</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Management</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Team Leadership</span>
+                        <span class="skill-tag">Project Management</span>
+                        <span class="skill-tag">Pre-sales</span>
+                        <span class="skill-tag">Technical Training</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <svg viewBox="0 0 24 24"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
+                </div>
+                <h2>Education & Training</h2>
+            </div>
+            
+            <div class="education-item">
+                <div class="education-header">
+                    <div>
+                        <h3>B.Sc. in Electronics & Telecommunication Engineering</h3>
+                        <div class="education-details">Daffodil International University</div>
+                    </div>
+                    <div class="education-year">2004 - 2008</div>
+                </div>
