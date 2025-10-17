@@ -1,0 +1,126 @@
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
+
+export default function PortfolioSite() {
+  const [activePage, setActivePage] = useState('home');
+
+  const sections = {
+    home: [
+      {
+        title: 'Career Timeline',
+        items: [
+          { year: '2010 - Present', title: 'Manager, IP Telephony Dept., BEXIMCO IT Division', description: 'Leading nationwide IP telephony service and managing advanced VoIP infrastructure.' },
+          { year: '2008 - 2010', title: 'Assistant Manager, Communications Technology Ltd.', description: 'Handled unified communication platforms and enterprise integration.' },
+          { year: '2004 - 2008', title: 'Engineer, BDCOM Online Ltd.', description: 'Network and VoIP deployment projects, nationwide support.' },
+        ],
+      },
+    ],
+    projects: [
+      {
+        title: 'Major Projects',
+        items: [
+          { year: '2019', title: 'Call Blaster & IVR Blaster', description: 'Developed scalable over-the-phone telemarketing and IVR systems with real-time dashboard and campaign control.' },
+          { year: '2018', title: 'MNP Integration System', description: 'Integrated Mobile Number Portability system with national softswitch infrastructure.' },
+        ],
+      },
+    ],
+    education: [
+      {
+        title: 'Academic Timeline',
+        items: [
+          { year: '2004 - 2008', title: 'B.Sc. in Electronics & Telecommunication Engineering', description: 'Daffodil International University, Dhaka.' },
+          { year: '2001 - 2003', title: 'HSC in Science', description: 'Savar Cantonment Public School & College.' },
+          { year: '1991 - 2001', title: 'SSC in Science', description: 'Savar Cantonment Public School & College.' },
+        ],
+      },
+    ],
+    contact: [
+      {
+        title: 'Contact Me',
+        items: [
+          { year: '📧', title: 'emailofshahriar@gmail.com', description: 'Send me an email for collaboration or consultation.' },
+          { year: '📞', title: '+8801755533331', description: 'Reach me directly for professional inquiries.' },
+          { year: '🌐', title: 'callblaster.bol-online.com', description: 'Visit my professional page for more information.' },
+        ],
+      },
+    ],
+  };
+
+  const navLinks = [
+    { id: 'home', label: 'Home' },
+    { id: 'projects', label: 'Projects' },
+    { id: 'education', label: 'Education' },
+    { id: 'contact', label: 'Contact' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-700 text-white font-sans">
+      {/* Navigation Bar */}
+      <nav className="bg-slate-800 px-8 py-4 flex justify-center space-x-8 shadow-md">
+        {navLinks.map(link => (
+          <button
+            key={link.id}
+            onClick={() => setActivePage(link.id)}
+            className={`uppercase tracking-wide text-sm font-medium transition-colors ${
+              activePage === link.id ? 'text-blue-400 border-b-2 border-blue-400' : 'text-gray-300 hover:text-white'
+            }`}
+          >
+            {link.label}
+          </button>
+        ))}
+      </nav>
+
+      {/* Timeline Section */}
+      <div className="max-w-5xl mx-auto py-12 px-6">
+        {sections[activePage].map((section, i) => (
+          <motion.div
+            key={i}
+            className="bg-slate-800 rounded-2xl shadow-xl mb-10 p-6"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-2xl font-semibold mb-8 border-l-4 border-blue-500 pl-4">{section.title}</h2>
+
+            <div className="relative border-l-2 border-blue-400 pl-8">
+              {section.items.map((item, j) => (
+                <TimelineItem key={j} item={item} />
+              ))}
+            </div>
+          </motion.div>
+        ))}
+
+        <footer className="text-center text-gray-400 text-sm mt-12">
+          <p>© {new Date().getFullYear()} Hasan Shahriar Kabir — Built with ❤️ by Engr. Shahriar</p>
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+function TimelineItem({ item }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="mb-8 relative">
+      <div className="absolute -left-3 top-2 w-6 h-6 bg-blue-500 rounded-full border-2 border-white"></div>
+      <div className="flex justify-between items-center cursor-pointer" onClick={() => setOpen(!open)}>
+        <div>
+          <p className="text-sm text-gray-400">{item.year}</p>
+          <h3 className="text-lg font-semibold">{item.title}</h3>
+          <p className="text-sm text-gray-300">{item.description}</p>
+        </div>
+        <ChevronDown className={`transition-transform ${open ? 'rotate-180' : ''}`} />
+      </div>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-3 text-gray-300 text-sm"
+        >
+          <p>Detailed information coming soon...</p>
+        </motion.div>
+      )}
+    </div>
+  );
+}
