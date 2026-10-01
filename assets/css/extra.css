@@ -1,0 +1,8 @@
+.experience__container{grid-template-columns:repeat(2,1fr);gap:1.5rem}
+.experience__card{background:var(--container-color);border-radius:1rem;padding:1.5rem;box-shadow:0 2px 6px rgba(0,0,0,.12);border-top:3px solid var(--first-color)}
+.experience__date{display:block;font-size:.8rem;font-weight:600;color:var(--first-color);margin-bottom:.25rem}
+.experience__role{color:var(--title-color);font-size:1.05rem;margin-bottom:.15rem}
+.experience__company{display:block;color:var(--text-color);font-size:.85rem;margin-bottom:.75rem}
+.experience__list{padding-left:1.1rem;color:var(--text-color);font-size:.85rem;line-height:1.6}
+.load-error{padding:3rem 1.5rem;text-align:center;color:var(--title-color)}
+@media(max-width:768px){.experience__container{grid-template-columns:1fr}}
