@@ -15,15 +15,16 @@ input,textarea,select{width:100%;padding:7px 9px;border:1px solid #ccd;border-ra
 </style></head><body>
 <div id="login" class="box"><h2 style="margin-top:0">Admin sign-in</h2>
 <div id="gbtn"></div><p id="gnote" style="color:var(--m);font-size:12px"></p><hr style="border:0;border-top:1px solid #e3e6f0;margin:16px 0">
-<label>GitHub token (fine-grained, <i>Contents: read &amp; write</i> on this repo)</label><input id="gt" type="password" placeholder="github_pat_...">
-<p><button id="ghb">Sign in with GitHub</button></p><div id="msg"></div></div>
+<p><button id="oauth" style="width:100%">Sign in with GitHub</button></p>
+<label style="display:block"><input type="checkbox" id="rem" style="width:auto" checked> Keep me signed in on this device</label>
+<details style="margin-top:14px"><summary style="cursor:pointer;color:var(--m)">Use a token instead</summary><input id="gt" type="password" placeholder="github_pat_..." style="margin:8px 0"><button id="ghb" class="g">Sign in with token</button></details><div id="msg"></div></div>
 <div id="app" hidden><div class="top"><b id="who"></b><input id="tok" type="password" placeholder="GitHub token (needed to publish)"><button id="pub">Publish to GitHub</button><button class="g" id="out">Sign out</button></div><div class="tabs" id="tabs"></div><div class="rows" id="rows"></div></div>
 <script>window.BASE='../'</script>
 <script src="../assets/js/config.js"></script><script src="../assets/js/dbcore.js"></script>
 <script>
 const $=i=>document.getElementById(i),TABLES=['profile','stats','skills','experience','education','services','portfolio','highlights','contact','users'],
 GH='https://api.github.com',TEXTY=['value','brief','details','about'],FLAGS=['home','active'];
-let db,user,cur,dirty=false,token=sessionStorage.gh||'';
+let db,user,cur,dirty=false,token=localStorage.gh||sessionStorage.gh||'';
 const say=(m,ok)=>{$('msg').textContent=m;$('msg').className=ok?'ok':''};
 const gh=(p,o={})=>fetch(GH+p,{...o,headers:{Authorization:'Bearer '+token,Accept:'application/vnd.github+json'}});
 const canEdit=t=>user.role==='admin'||(user.role==='editor'&&t!=='users'&&(user.pages||'').split(',').map(s=>s.trim()).includes(t));
@@ -36,7 +37,7 @@ async function enter(provider,id,name){
  $('tabs').innerHTML=TABLES.filter(t=>t!=='users'||u.role==='admin').map(t=>`<button data-t="${t}">${t}</button>`).join('');tab(TABLES[0]);
 }
 $('ghb').onclick=async()=>{token=$('gt').value.trim();if(!token)return say('Paste a token first.');
- const r=await gh('/user');if(!r.ok)return say('GitHub rejected this token.');const j=await r.json();sessionStorage.gh=token;enter('github',j.login,j.login)};
+ const r=await gh('/user');if(!r.ok)return say('GitHub rejected this token.');const j=await r.json();sessionStorage.gh=token;if($('rem').checked)localStorage.gh=token;enter('github',j.login,j.login)};
 function gcb(r){const p=JSON.parse(decodeURIComponent(escape(atob(r.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))));
  if(!p.email_verified)return say('Google email not verified.');enter('google',p.email,p.name||p.email)}
 (function g(){if(!CFG.GOOGLE_CLIENT_ID){$('gnote').textContent='Google sign-in: set GOOGLE_CLIENT_ID in assets/js/config.js.';return}
@@ -58,6 +59,14 @@ $('pub').onclick=async()=>{token=$('tok').value.trim()||token;if(!token)return a
  const p=`/repos/${CFG.GH_OWNER}/${CFG.GH_REPO}/contents/data/portfolio.db`;const g=await gh(p+'?ref='+CFG.GH_BRANCH);
  const r=await gh(p,{method:'PUT',body:JSON.stringify({message:'Update portfolio data ('+user.name+')',content:btoa(s),sha:g.ok?(await g.json()).sha:undefined,branch:CFG.GH_BRANCH})});
  alert(r.ok?'Published. The live site updates in about a minute.':'Publish failed: '+(await r.json()).message);if(r.ok)dirty=false};
-$('out').onclick=()=>{sessionStorage.clear();location.reload()};
+$('out').onclick=()=>{sessionStorage.clear();localStorage.removeItem('gh');location.reload()};
+(async function cb(){const q=new URLSearchParams(location.search);if(!q.get('code'))return;history.replaceState({},'',location.pathname);
+ if(q.get('state')!==sessionStorage.st)return say('Sign-in check failed. Please try again.');say('Signing in...',1);
+ try{const r=await fetch(CFG.AUTH_WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:q.get('code')})});const j=await r.json();
+ if(!j.access_token)return say(j.error||'GitHub sign-in failed.');token=j.access_token;sessionStorage.gh=token;if(sessionStorage.rem)localStorage.gh=token;enter('github',j.login,j.login)}catch(e){say('Could not reach the sign-in service.')}})();
+$('oauth').onclick=()=>{if(!CFG.GH_CLIENT_ID||!CFG.AUTH_WORKER)return say('GitHub sign-in is not configured yet (GH_CLIENT_ID / AUTH_WORKER in config.js).');
+ const s=crypto.randomUUID();sessionStorage.st=s;sessionStorage.rem=$('rem').checked?'1':'';
+ location.href='https://github.com/login/oauth/authorize?'+new URLSearchParams({client_id:CFG.GH_CLIENT_ID,scope:'public_repo',state:s,redirect_uri:location.origin+location.pathname})};
+if(token)gh('/user').then(async r=>{if(r.ok){const j=await r.json();enter('github',j.login,j.login)}else{localStorage.removeItem('gh');sessionStorage.removeItem('gh');token=''}});
 addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
 </script></body></html>
