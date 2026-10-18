@@ -1,2 +1,2 @@
 /* Fill these in after creating your GitHub repo / Google OAuth client */
-window.CFG={GH_OWNER:'shahriarhasib',GH_REPO:'shahriarhasib.github.io',GH_BRANCH:'main',GH_CLIENT_ID:'Ov23liM205jbYEfpu3il',AUTH_WORKER:'https://ancient-bird-5316.emailofshahriar.workers.dev',GOOGLE_CLIENT_ID:''};
+window.CFG={GH_OWNER:'shahriarhasib',GH_REPO:'shahriarhasib.github.io',GH_BRANCH:'main',GH_CLIENT_ID:'Ov23liM205jbYEfpu3il',AUTH_WORKER:'https://ancient-bird-5316.emailofshahriar.workers.dev',GOOGLE_CLIENT_ID:'850027169929-vt07olcirvr6krls1h81a1auhg3m2o8a.apps.googleusercontent.com'};
