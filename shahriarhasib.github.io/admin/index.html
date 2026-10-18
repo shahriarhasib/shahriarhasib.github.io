@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin</title><link rel="icon" href="../assets/img/favicon.svg">
+<style>
+:root{--a:#4a6cf7;--b:#f4f6fb;--t:#1b2333;--m:#667}
+*{box-sizing:border-box}body{margin:0;font:14px/1.5 system-ui,sans-serif;background:var(--b);color:var(--t)}
+.box{max-width:420px;margin:12vh auto;background:#fff;padding:28px;border-radius:14px;box-shadow:0 8px 30px #0001}
+button{background:var(--a);color:#fff;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:600}button.g{background:#e8ecf7;color:var(--t)}button.d{background:#d9363e}
+input,textarea,select{width:100%;padding:7px 9px;border:1px solid #ccd;border-radius:7px;font:inherit}textarea{min-height:70px}
+.top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#fff;padding:10px 16px;position:sticky;top:0;box-shadow:0 1px 6px #0001;z-index:2}.top b{margin-right:auto}.top input{width:230px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;padding:12px 16px}.tabs button{background:#fff;color:var(--t);border:1px solid #d5daea}.tabs button.on{background:var(--a);color:#fff}
+.rows{padding:0 16px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+.r{background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 8px #0001}.r label{display:block;font-size:11px;color:var(--m);margin:8px 0 2px;text-transform:uppercase}
+.act{display:flex;gap:8px;margin-top:12px}#msg{color:#c33;margin-top:10px}.ok{color:#197a3e!important}.ro{opacity:.6}
+</style></head><body>
+<div id="login" class="box"><h2 style="margin-top:0">Admin sign-in</h2>
+<div id="gbtn"></div><p id="gnote" style="color:var(--m);font-size:12px"></p><hr style="border:0;border-top:1px solid #e3e6f0;margin:16px 0">
+<label>GitHub token (fine-grained, <i>Contents: read &amp; write</i> on this repo)</label><input id="gt" type="password" placeholder="github_pat_...">
+<p><button id="ghb">Sign in with GitHub</button></p><div id="msg"></div></div>
+<div id="app" hidden><div class="top"><b id="who"></b><input id="tok" type="password" placeholder="GitHub token (needed to publish)"><button id="pub">Publish to GitHub</button><button class="g" id="out">Sign out</button></div><div class="tabs" id="tabs"></div><div class="rows" id="rows"></div></div>
+<script>window.BASE='../'</script>
+<script src="../assets/js/config.js"></script><script src="../assets/js/dbcore.js"></script>
+<script>
+const $=i=>document.getElementById(i),TABLES=['profile','stats','skills','experience','education','services','portfolio','highlights','contact','users'],
+GH='https://api.github.com',TEXTY=['value','brief','details','about'],FLAGS=['home','active'];
+let db,user,cur,dirty=false,token=sessionStorage.gh||'';
+const say=(m,ok)=>{$('msg').textContent=m;$('msg').className=ok?'ok':''};
+const gh=(p,o={})=>fetch(GH+p,{...o,headers:{Authorization:'Bearer '+token,Accept:'application/vnd.github+json'}});
+const canEdit=t=>user.role==='admin'||(user.role==='editor'&&t!=='users'&&(user.pages||'').split(',').map(s=>s.trim()).includes(t));
+async function enter(provider,id,name){
+ try{db=db||await openDB()}catch(e){return say('Could not load the database.')}
+ const u=rows(db,'SELECT * FROM users WHERE provider=? AND lower(identifier)=lower(?) AND active=1',[provider,id])[0];
+ if(!u)return say(`"${id}" is not an allowed ${provider} account.`);
+ user={...u,name};$('login').hidden=true;$('app').hidden=false;
+ $('who').textContent=`${name} (${provider}) · role: ${u.role}`;$('tok').value=token;
+ $('tabs').innerHTML=TABLES.filter(t=>t!=='users'||u.role==='admin').map(t=>`<button data-t="${t}">${t}</button>`).join('');tab(TABLES[0]);
+}
+$('ghb').onclick=async()=>{token=$('gt').value.trim();if(!token)return say('Paste a token first.');
+ const r=await gh('/user');if(!r.ok)return say('GitHub rejected this token.');const j=await r.json();sessionStorage.gh=token;enter('github',j.login,j.login)};
+function gcb(r){const p=JSON.parse(decodeURIComponent(escape(atob(r.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))));
+ if(!p.email_verified)return say('Google email not verified.');enter('google',p.email,p.name||p.email)}
+(function g(){if(!CFG.GOOGLE_CLIENT_ID){$('gnote').textContent='Google sign-in: set GOOGLE_CLIENT_ID in assets/js/config.js.';return}
+ const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=()=>{google.accounts.id.initialize({client_id:CFG.GOOGLE_CLIENT_ID,callback:gcb});google.accounts.id.renderButton($('gbtn'),{theme:'outline',size:'large',text:'signin_with'})};document.body.appendChild(s)})();
+function tab(t){cur=t;document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));draw()}
+function draw(){const info=rows(db,`PRAGMA table_info(${cur})`),ed=canEdit(cur);
+ $('rows').innerHTML=(ed?`<div><button id="add">+ Add row</button></div>`:'<div class="ro">Read-only for your role.</div>')+tbl(db,cur).map(r=>`<div class="r" data-id="${r.id}">`+info.map(c=>{const v=r[c.name],ro=c.name==='id'||!ed?'disabled':'';
+  const inp=FLAGS.includes(c.name)?`<input type="checkbox" data-c="${c.name}" ${v?'checked':''} ${ro} style="width:auto">`:c.name==='role'?`<select data-c="role" ${ro}>${['admin','editor','viewer'].map(o=>`<option ${o===v?'selected':''}>${o}</option>`)}</select>`:TEXTY.includes(c.name)?`<textarea data-c="${c.name}" ${ro}>${esc(v)}</textarea>`:`<input data-c="${c.name}" data-n="${c.type==='INTEGER'?1:0}" value="${esc(v)}" ${ro}>`;
+  return `<label>${c.name}${c.name==='pages'?' (comma-separated table names, for editors)':''}</label>${inp}`}).join('')+(ed?`<div class="act"><button data-a="save">Save</button><button class="d" data-a="del">Delete</button></div>`:'')+'</div>').join('')}
+document.addEventListener('click',e=>{const b=e.target;
+ if(b.dataset.t)return tab(b.dataset.t);
+ if(b.id==='add'&&canEdit(cur)){db.run(`INSERT INTO ${cur} DEFAULT VALUES`);dirty=true;return draw()}
+ const card=b.closest('.r');if(!card||!b.dataset.a||!canEdit(cur))return;const id=card.dataset.id;
+ if(b.dataset.a==='del'){if(!confirm('Delete this row?'))return;db.run(`DELETE FROM ${cur} WHERE id=?`,[id]);dirty=true;return draw()}
+ const f=[...card.querySelectorAll('[data-c]')].filter(x=>x.dataset.c!=='id');
+ db.run(`UPDATE ${cur} SET ${f.map(x=>x.dataset.c+'=?').join(',')} WHERE id=?`,f.map(x=>x.type==='checkbox'?+x.checked:x.dataset.n==='1'?Number(x.value):x.value).concat([id]));dirty=true;b.textContent='Saved ✓';setTimeout(()=>b.textContent='Save',1200)});
+$('pub').onclick=async()=>{token=$('tok').value.trim()||token;if(!token)return alert('Enter a GitHub token with Contents write access.');sessionStorage.gh=token;
+ const bin=db.export();let s='';for(let i=0;i<bin.length;i+=8192)s+=String.fromCharCode.apply(null,bin.subarray(i,i+8192));
+ const p=`/repos/${CFG.GH_OWNER}/${CFG.GH_REPO}/contents/data/portfolio.db`;const g=await gh(p+'?ref='+CFG.GH_BRANCH);
+ const r=await gh(p,{method:'PUT',body:JSON.stringify({message:'Update portfolio data ('+user.name+')',content:btoa(s),sha:g.ok?(await g.json()).sha:undefined,branch:CFG.GH_BRANCH})});
+ alert(r.ok?'Published. The live site updates in about a minute.':'Publish failed: '+(await r.json()).message);if(r.ok)dirty=false};
+$('out').onclick=()=>{sessionStorage.clear();location.reload()};
+addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
+</script></body></html>
