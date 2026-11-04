@@ -14,3 +14,6 @@
 .experience__card .services__icon{display:block;margin-bottom:.5rem}
 .about__buttons{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
 .detail-page .main{padding-top:1rem}
+.skills__icon-img{width:2rem;height:2rem;object-fit:contain;margin-right:.75rem}
+.services__icon-img{width:2.5rem;height:2.5rem;object-fit:contain;display:block;margin-bottom:1rem}
+.experience__logo{width:48px;height:48px;object-fit:cover;border-radius:.6rem;float:right;margin-left:.75rem}
